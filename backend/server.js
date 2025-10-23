@@ -9,35 +9,14 @@ app.use(express.json());
 const baseDatos = new pg.Pool({
     user: "postgres",
     host: "localhost",
-    database: "bdmueble",
-    password: "tu_contraseña",
+    database: "bdhotel",
+    password: "admin",
     port: 5432,
 });
 
 // Obtener todos los productos
-app.get("/productos", async (req, res) => {
-    const result = await baseDatos.query("SELECT * FROM producto");
+app.get("/clientes", async (req, res) => {
+    const result = await baseDatos.query("select * from cliente c, persona p where c.idcliente = p.id");
     res.json(result.rows);
 });
-
-// Insertar un producto
-app.post("/productos", async (req, res) => {
-    const { nombre, material, color, precio } = req.body;
-    await baseDatos.query(
-        "INSERT INTO producto (nombre, material, color, precio) VALUES ($1, $2, $3, $4)",
-        [nombre, material, color, precio]
-    );
-    res.json({ mensaje: "Producto agregado" });
-});
-
-// Actualizar precio (dispara trigger)
-app.put("/productos/:id", async (req, res) => {
-    const { precio } = req.body;
-    await baseDatos.query("UPDATE producto SET precio = $1 WHERE idproducto = $2", [
-        precio,
-        req.params.id,
-    ]);
-    res.json({ mensaje: "Precio actualizado" });
-});
-
 app.listen(4000, () => console.log("Servidor backend en http://localhost:4000"));
