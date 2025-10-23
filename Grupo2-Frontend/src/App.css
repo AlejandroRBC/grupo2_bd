@@ -1,0 +1,27 @@
+
+
+/*
+    estilos para las tablas, 
+*/
+tr{
+    background-Color: '#f2f2f2'
+}
+th{
+    padding: 10px;
+    border: 1px solid #ddd;
+    align-items: center;
+    
+}
+.btn-eliminar{
+    margin-Right: '5px';
+    padding: '5px 10px';
+    background-Color: '#2196F3';
+    color: 'white';
+    border: 'none' 
+}
+.btnEditar{
+    padding: '5px 10px';
+    background-Color: '#f44336';
+    color: 'white';
+    border: 'none' 
+}
