@@ -3,6 +3,7 @@ import './App.css'
 import { useState } from 'react'
 import Clientes from "./modules/Clientes/Clientes";
 import Hoteles from "./modules/Hoteles/Hoteles";
+import Ingresos from "./modules/Ingresos/Ingresos";
 
 function App() {
   const [moduloActual, setModuloActual] = useState('clientes');
@@ -36,10 +37,23 @@ function App() {
           Hoteles
         </button>
       </nav>
+      <button 
+          onClick={() => setModuloActual('ingresos')}
+          style={{ 
+            padding: '10px 20px',
+            backgroundColor: moduloActual === 'ingresos' ? '#007bff' : '#6c757d',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          Ingresos
+        </button>
 
       <div style={{ padding: '20px' }}>
         {moduloActual === 'clientes' && <Clientes />}
         {moduloActual === 'hoteles' && <Hoteles />}
+        {moduloActual === 'ingresos' && <Ingresos />}
       </div>
     </div>
   )
