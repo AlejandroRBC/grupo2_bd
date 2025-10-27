@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Clientes from "./modules/Clientes/Clientes";
 import Hoteles from "./modules/Hoteles/Hoteles";
 import Ingresos from "./modules/Ingresos/Ingresos";
+import Danos from './modules/Danos/Danos';
 
 function App() {
   const [moduloActual, setModuloActual] = useState('clientes');
@@ -36,7 +37,6 @@ function App() {
         >
           Hoteles
         </button>
-      </nav>
       <button 
           onClick={() => setModuloActual('ingresos')}
           style={{ 
@@ -49,11 +49,24 @@ function App() {
         >
           Ingresos
         </button>
-
+        <button 
+              style={{ 
+                padding: '10px 20px',
+                backgroundColor: moduloActual === 'danos' ? '#007bff' : '#6c757d',
+                color: 'white',
+                border: 'none',
+                cursor: 'pointer'
+              }}  
+              onClick={() => setModuloActual('danos')}
+            >
+               Daños
+        </button>
+      </nav>
       <div style={{ padding: '20px' }}>
         {moduloActual === 'clientes' && <Clientes />}
         {moduloActual === 'hoteles' && <Hoteles />}
         {moduloActual === 'ingresos' && <Ingresos />}
+        {moduloActual === 'danos' && <Danos />}
       </div>
     </div>
   )

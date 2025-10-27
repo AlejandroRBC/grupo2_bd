@@ -4,6 +4,7 @@ import cors from "cors";
 import clientesRoutes from "./routes/clientesRoutes.js";
 import hotelesRoutes from "./routes/hotelesRoutes.js";
 import ingresosRoutes from "./routes/ingresosRoutes.js";
+import danosRoutes from "./routes/danosRoutes.js";
 import reservasRoutes from './routes/reservasRoutes.js';
 
 const app = express();
@@ -15,5 +16,6 @@ app.use("/clientes", clientesRoutes);
 app.use("/hoteles", hotelesRoutes);
 app.use('/ingresos',ingresosRoutes);
 app.use('/reservas', reservasRoutes);
+app.use("/danos", danosRoutes);
 
 app.listen(4000, () => console.log("Servidor backend en http://localhost:4000"));
