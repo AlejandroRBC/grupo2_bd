@@ -1,10 +1,7 @@
-
+import ListarEmpleados from "./components/ListarEmpleados";
 
 function Empleados() {
-    return(
-        <>
-           Hola mundo desde empleados 
-        </>
-    );
+    return <ListarEmpleados />;
 }
-export default Empleados
+
+export default Empleados;

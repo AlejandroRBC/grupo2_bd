@@ -4,9 +4,11 @@ export const empleadosController = {
   async listar(req, res) {
     try {
       const result = await pool.query(`
-        select * 
-        from persona p, empleado e 
-        where p.id = e.idempleado
+        SELECT p.id, p.nombre, p.apellido, p.telefono, p.fechanaci, p.sexo, p.nacionalidad,
+               e.cargo, e.salario, e.turno
+        FROM persona p
+        JOIN empleado e ON p.id = e.idempleado
+        ORDER BY p.id
       `);
       res.json(result.rows);
     } catch (error) {
@@ -16,61 +18,103 @@ export const empleadosController = {
   },
 
   async crear(req, res) {
-    const { id, nombre, apellido, telefono, fechanaci, sexo, nacionalidad, categoria, email } = req.body;
+    const { id, nombre, apellido, telefono, fechanaci, sexo, nacionalidad, cargo, salario, turno } = req.body;
+    
+    const client = await pool.connect();
     try {
+      await client.query('BEGIN');
+
       // Insertar persona usando el id manual (CI)
-      await pool.query(
+      await client.query(
         `INSERT INTO persona (id, nombre, apellido, telefono, fechanaci, sexo, nacionalidad)
-         VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [id, nombre, apellido, telefono, fechanaci === "" ? null : fechanaci, sexo, nacionalidad]
       );
-  
-      // Insertar cliente con mismo id
-      await pool.query(
-        `INSERT INTO cliente (idcliente, categoria, email)
-         VALUES ($1,$2,$3)`,
-        [id, categoria, email]
+
+      // Insertar empleado con mismo id
+      await client.query(
+        `INSERT INTO empleado (idempleado, cargo, salario, turno)
+         VALUES ($1, $2, $3, $4)`,
+        [id, cargo, salario, turno]
       );
-  
-      res.json({ mensaje: "Cliente agregado correctamente" });
+
+      await client.query('COMMIT');
+      res.json({ mensaje: "Empleado agregado correctamente" });
     } catch (error) {
-      console.error("Error al crear cliente:", error);
-      res.status(500).json({ error: "Error al crear cliente" });
+      await client.query('ROLLBACK');
+      console.error("Error al crear empleado:", error);
+      
+      if (error.code === '23505') { // Violación de unique constraint
+        res.status(400).json({ error: "El ID (carnet) ya existe" });
+      } else {
+        res.status(500).json({ error: "Error al crear empleado" });
+      }
+    } finally {
+      client.release();
     }
   },
 
   async actualizar(req, res) {
     const { id } = req.params;
-    const { nombre, apellido, telefono, fechanaci, sexo, nacionalidad, categoria, email } = req.body;
+    const { nombre, apellido, telefono, fechanaci, sexo, nacionalidad, cargo, salario, turno } = req.body;
+    
+    const client = await pool.connect();
     try {
-      await pool.query(
+      await client.query('BEGIN');
+
+      await client.query(
         `UPDATE persona
          SET nombre=$1, apellido=$2, telefono=$3, fechanaci=$4, sexo=$5, nacionalidad=$6
          WHERE id=$7`,
         [nombre, apellido, telefono, fechanaci === "" ? null : fechanaci, sexo, nacionalidad, id]
       );
 
-      await pool.query(
-        `UPDATE cliente SET categoria=$1, email=$2 WHERE idcliente=$3`,
-        [categoria, email, id]
+      await client.query(
+        `UPDATE empleado SET cargo=$1, salario=$2, turno=$3 WHERE idempleado=$4`,
+        [cargo, salario, turno, id]
       );
-      res.json({ mensaje: "Cliente actualizado correctamente" });
+
+      await client.query('COMMIT');
+      res.json({ mensaje: "Empleado actualizado correctamente" });
     } catch (error) {
-      console.error("Error al actualizar cliente:", error);
-      res.status(500).json({ error: "Error al actualizar cliente" });
+      await client.query('ROLLBACK');
+      console.error("Error al actualizar empleado:", error);
+      res.status(500).json({ error: "Error al actualizar empleado" });
+    } finally {
+      client.release();
     }
   },
 
   async eliminar(req, res) {
     const { id } = req.params;
+    
+    const client = await pool.connect();
     try {
-      await pool.query("DELETE FROM cliente WHERE idcliente=$1", [id]);
-      await pool.query("DELETE FROM persona WHERE id=$1", [id]);
-      res.json({ mensaje: "Cliente eliminado correctamente" });
-    } catch (error) {
-      console.error("Error al eliminar cliente:", error);
-      res.status(500).json({ error: "Error al eliminar cliente" });
-    }
-  },
+      await client.query('BEGIN');
 
+      // Verificar si el empleado tiene registros relacionados antes de eliminar
+      const tieneRelaciones = await client.query(
+        `SELECT 1 FROM dano WHERE idempleado = $1 LIMIT 1`,
+        [id]
+      );
+
+      if (tieneRelaciones.rows.length > 0) {
+        return res.status(400).json({ 
+          error: "No se puede eliminar el empleado porque tiene registros de daños asociados" 
+        });
+      }
+
+      await client.query("DELETE FROM empleado WHERE idempleado=$1", [id]);
+      await client.query("DELETE FROM persona WHERE id=$1", [id]);
+
+      await client.query('COMMIT');
+      res.json({ mensaje: "Empleado eliminado correctamente" });
+    } catch (error) {
+      await client.query('ROLLBACK');
+      console.error("Error al eliminar empleado:", error);
+      res.status(500).json({ error: "Error al eliminar empleado" });
+    } finally {
+      client.release();
+    }
+  }
 };
