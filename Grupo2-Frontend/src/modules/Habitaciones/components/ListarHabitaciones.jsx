@@ -23,7 +23,7 @@ function ListarHabitaciones() {
   return (
     <div>
       <h1>Gestión de Habitaciones por Hotel</h1>
-      <button onClick={() => setMostrarForm(true)} style={{ padding: "10px", marginBottom: "20px" }}>
+      <button onClick={() => setMostrarForm(true)} className="btnEditar">
         Asignar nueva habitación
       </button>
 
@@ -55,6 +55,10 @@ function ListarHabitaciones() {
               <td>{h.precio}</td>
               <td>{h.nro_piso}</td>
               <td>
+                <button className="btnEditar"
+                onClick={() => habitacionesService.actualizarHabitacion(h.idhotel, h.nrohabitacion).then(cargarHabitaciones)}>
+                  Editar
+                </button>
                 <button className="btn-eliminar"
                 onClick={() => habitacionesService.eliminarHabitacion(h.idhotel, h.nrohabitacion).then(cargarHabitaciones)}>
                   Eliminar

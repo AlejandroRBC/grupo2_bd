@@ -10,9 +10,24 @@ export const habitacionesService = {
   async crearHabitacion(data) {
     await axios.post(`${API_URL}/habitaciones`, data);
   },
-  async eliminarHabitacion(id) {
-    await axios.delete(`${API_URL}/habitaciones/${id}`);
-  },
+  async eliminarHotel(id, habitacionData) {
+        try {
+            const response = await axios.delete(`${API_URL}/habitaciones/${id, habitacionData}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error al eliminar habitacion:', error);
+            throw error;
+        }
+    },
+  async actualizarHabitacion(id, habitacionData) {
+        try {
+            const response = await axios.put(`${API_URL}/habitaciones/${id}`, habitacionData);
+            return response.data;
+        } catch (error) {
+            console.error('Error al actualizar habitacion:', error);
+            throw error;
+        }
+    }
 };
 
 export const hotelesService = {
