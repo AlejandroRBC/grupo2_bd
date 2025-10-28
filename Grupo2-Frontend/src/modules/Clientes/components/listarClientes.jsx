@@ -105,6 +105,7 @@ function ListarClientes() {
                                     Editar
                                 </button>
                                 <button 
+                                    className= "btnEditar"
                                     onClick={() => handleEliminar(cliente.id)}
                                 >
                                     Eliminar

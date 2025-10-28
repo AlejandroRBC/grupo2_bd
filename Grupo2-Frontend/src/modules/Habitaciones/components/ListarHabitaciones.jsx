@@ -55,7 +55,8 @@ function ListarHabitaciones() {
               <td>{h.precio}</td>
               <td>{h.nro_piso}</td>
               <td>
-                <button onClick={() => habitacionesService.eliminarHabitacion(h.idhotel, h.nrohabitacion).then(cargarHabitaciones)}>
+                <button className="btn-eliminar"
+                onClick={() => habitacionesService.eliminarHabitacion(h.idhotel, h.nrohabitacion).then(cargarHabitaciones)}>
                   Eliminar
                 </button>
               </td>

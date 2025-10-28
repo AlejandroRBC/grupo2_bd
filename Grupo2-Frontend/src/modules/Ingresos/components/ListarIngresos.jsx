@@ -76,27 +76,8 @@ function ListarIngresos() {
             )}
 
             {mostrarDetalle && detalleIngreso && (
-                <div style={{ 
-                    position: 'fixed', 
-                    top: 0, 
-                    left: 0, 
-                    width: '100%', 
-                    height: '100%', 
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 1000
-                }}>
-                    <div style={{ 
-                        backgroundColor: 'white', 
-                        padding: '30px', 
-                        borderRadius: '8px',
-                        maxWidth: '600px',
-                        width: '90%',
-                        maxHeight: '80vh',
-                        overflow: 'auto'
-                    }}>
+                <div >
+                    <div >
                         <h2>Detalle del Ingreso #{detalleIngreso.idregistro}</h2>
                         
                         <div style={{ marginBottom: '15px' }}>
@@ -132,15 +113,7 @@ function ListarIngresos() {
 
                         <button 
                             onClick={cerrarDetalle}
-                            style={{ 
-                                padding: '10px 20px', 
-                                backgroundColor: '#6c757d', 
-                                color: 'white', 
-                                border: 'none',
-                                cursor: 'pointer',
-                                marginTop: '20px',
-                                borderRadius: '4px'
-                            }}
+                            className="btn-eliminar"
                         >
                             Cerrar
                         </button>
@@ -148,42 +121,35 @@ function ListarIngresos() {
                 </div>
             )}
 
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table >
                 <thead>
-                    <tr style={{ backgroundColor: '#f8f9fa' }}>
-                        <th style={{ padding: '10px', border: '1px solid #dee2e6' }}>ID Registro</th>
-                        <th style={{ padding: '10px', border: '1px solid #dee2e6' }}>Hotel</th>
-                        <th style={{ padding: '10px', border: '1px solid #dee2e6' }}>Habitación</th>
-                        <th style={{ padding: '10px', border: '1px solid #dee2e6' }}>Tipo</th>
-                        <th style={{ padding: '10px', border: '1px solid #dee2e6' }}>Fecha Entrada</th>
-                        <th style={{ padding: '10px', border: '1px solid #dee2e6' }}>Hora Entrada</th>
-                        <th style={{ padding: '10px', border: '1px solid #dee2e6' }}>Clientes</th>
-                        <th style={{ padding: '10px', border: '1px solid #dee2e6' }}>Acciones</th>
+                    <tr >
+                        <th >ID Registro</th>
+                        <th >Hotel</th>
+                        <th >Habitación</th>
+                        <th >Tipo</th>
+                        <th >Fecha Entrada</th>
+                        <th >Hora Entrada</th>
+                        <th >Clientes</th>
+                        <th >Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {ingresos.map((ingreso) => (
                         <tr key={ingreso.idregistro}>
-                            <td style={{ padding: '10px', border: '1px solid #dee2e6' }}>{ingreso.idregistro}</td>
-                            <td style={{ padding: '10px', border: '1px solid #dee2e6' }}>{ingreso.nombreh}</td>
-                            <td style={{ padding: '10px', border: '1px solid #dee2e6' }}>{ingreso.nrohabitacion}</td>
-                            <td style={{ padding: '10px', border: '1px solid #dee2e6' }}>{ingreso.tipohabitacion}</td>
-                            <td style={{ padding: '10px', border: '1px solid #dee2e6' }}>
+                            <td >{ingreso.idregistro}</td>
+                            <td >{ingreso.nombreh}</td>
+                            <td >{ingreso.nrohabitacion}</td>
+                            <td >{ingreso.tipohabitacion}</td>
+                            <td >
                                 {new Date(ingreso.fecha_entrada).toLocaleDateString()}
                             </td>
-                            <td style={{ padding: '10px', border: '1px solid #dee2e6' }}>{ingreso.hora_entrada}</td>
-                            <td style={{ padding: '10px', border: '1px solid #dee2e6' }}>{ingreso.clientes || 'N/A'}</td>
-                            <td style={{ padding: '10px', border: '1px solid #dee2e6' }}>
+                            <td >{ingreso.hora_entrada}</td>
+                            <td >{ingreso.clientes || 'N/A'}</td>
+                            <td >
                                 <button
                                     onClick={() => handleVerDetalle(ingreso.idregistro)}
-                                    style={{ 
-                                        padding: '5px 10px',
-                                        backgroundColor: '#007bff',
-                                        color: 'white',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        borderRadius: '4px'
-                                    }}
+                                    className="btnEditar"
                                 >
                                     Ver Detalle
                                 </button>

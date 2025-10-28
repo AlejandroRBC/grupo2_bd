@@ -79,59 +79,46 @@ function ListarEmpleados() {
                 />
             )}
 
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table >
                 <thead>
-                    <tr style={{ backgroundColor: '#f2f2f2' }}>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>ID</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Nombre</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Apellido</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Teléfono</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Fecha Nac.</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Sexo</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Nacionalidad</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Cargo</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Salario</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Turno</th>
-                        <th style={{ padding: '10px', border: '1px solid #ddd' }}>Acciones</th>
+                    <tr >
+                        <th >ID</th>
+                        <th >Nombre</th>
+                        <th >Apellido</th>
+                        <th >Teléfono</th>
+                        <th >Fecha Nac.</th>
+                        <th >Sexo</th>
+                        <th >Nacionalidad</th>
+                        <th >Cargo</th>
+                        <th >Salario</th>
+                        <th >Turno</th>
+                        <th >Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {empleados.map((empleado) => (
                         <tr key={empleado.id}>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{empleado.id}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{empleado.nombre}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{empleado.apellido}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{empleado.telefono}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>
+                            <td >{empleado.id}</td>
+                            <td >{empleado.nombre}</td>
+                            <td >{empleado.apellido}</td>
+                            <td >{empleado.telefono}</td>
+                            <td >
                                 {empleado.fechanaci ? empleado.fechanaci.split('T')[0] : ''}
                             </td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{empleado.sexo}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{empleado.nacionalidad}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{empleado.cargo}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>${empleado.salario}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{empleado.turno}</td>
-                            <td style={{ padding: '10px', border: '1px solid #ddd' }}>
+                            <td >{empleado.sexo}</td>
+                            <td >{empleado.nacionalidad}</td>
+                            <td >{empleado.cargo}</td>
+                            <td >${empleado.salario}</td>
+                            <td >{empleado.turno}</td>
+                            <td >
                                 <button 
-                                    style={{ 
-                                        marginRight: '5px', 
-                                        padding: '5px 10px', 
-                                        backgroundColor: '#2196F3', 
-                                        color: 'white', 
-                                        border: 'none',
-                                        cursor: 'pointer'
-                                    }}
+                                    className="btnEditar"
                                     onClick={() => handleEditar(empleado)}
                                 >
                                     Editar
                                 </button>
                                 <button 
-                                    style={{ 
-                                        padding: '5px 10px', 
-                                        backgroundColor: '#f44336', 
-                                        color: 'white', 
-                                        border: 'none',
-                                        cursor: 'pointer'
-                                    }}
+                                    className="btn-eliminar"
                                     onClick={() => handleEliminar(empleado.id)}
                                 >
                                     Eliminar
