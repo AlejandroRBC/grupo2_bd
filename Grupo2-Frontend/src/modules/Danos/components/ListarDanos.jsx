@@ -28,18 +28,6 @@ const ListarDanos = () => {
 
   return (
     <div>
-      {sqlQuery && (
-        <div className="mt-4">
-          <h5>Sentencia SQL Utilizada:</h5>
-          <div className="card">
-            <div className="card-body">
-              <code style={{ fontSize: '0.9em', whiteSpace: 'pre-wrap' }}>
-                {sqlQuery}
-              </code>
-            </div>
-          </div>
-        </div>
-      )}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h3>Daños Reportados</h3>
         <button 
@@ -87,7 +75,18 @@ const ListarDanos = () => {
         </table>
       </div>
 
-      
+      {sqlQuery && (
+        <div className="mt-4">
+          <h5>Sentencia SQL Utilizada:</h5>
+          <div className="card">
+            <div className="card-body">
+              <code style={{ fontSize: '0.9em', whiteSpace: 'pre-wrap' }}>
+                {sqlQuery}
+              </code>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
