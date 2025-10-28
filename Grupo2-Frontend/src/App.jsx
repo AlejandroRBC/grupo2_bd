@@ -1,4 +1,3 @@
-
 import './App.css'
 import { useState } from 'react'
 import Clientes from "./modules/Clientes/Clientes";
@@ -7,6 +6,7 @@ import Ingresos from "./modules/Ingresos/Ingresos";
 import Danos from './modules/Danos/Danos';
 import Habitaciones from "./modules/Habitaciones/Habitaciones";
 import Empleados from "./modules/Empleados/Empleados";
+import Reservas from "./modules/Reservas/Reservas";
 
 function App() {
   const [moduloActual, setModuloActual] = useState('clientes');
@@ -17,7 +17,8 @@ function App() {
     { key: 'hoteles', label: 'Hoteles', icon: '' },
     { key: 'habitaciones', label: 'Habitaciones', icon: '' },
     { key: 'ingresos', label: 'Ingresos', icon: '' },
-    { key: 'danos', label: 'Daños', icon: '' }
+    { key: 'danos', label: 'Daños', icon: '' },
+    { key: 'reservas', label: 'Reservas', icon: '' }
   ];
 
   return (
@@ -135,6 +136,7 @@ function App() {
           {moduloActual === 'habitaciones' && <Habitaciones />}
           {moduloActual === 'ingresos' && <Ingresos />}
           {moduloActual === 'danos' && <Danos />}
+          {moduloActual === 'reservas' && <Reservas />}
         </div>
       </div>
 
