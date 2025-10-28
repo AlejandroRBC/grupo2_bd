@@ -5,6 +5,7 @@ import Clientes from "./modules/Clientes/Clientes";
 import Hoteles from "./modules/Hoteles/Hoteles";
 import Ingresos from "./modules/Ingresos/Ingresos";
 import Danos from './modules/Danos/Danos';
+import Habitaciones from "./modules/Habitaciones/Habitaciones";
 
 function App() {
   const [moduloActual, setModuloActual] = useState('clientes');
@@ -61,12 +62,25 @@ function App() {
             >
                Daños
         </button>
+        <button 
+          onClick={() => setModuloActual('habitaciones')}
+          style={{ 
+            padding: '10px 20px',
+            backgroundColor: moduloActual === 'habitaciones' ? '#007bff' : '#6c757d',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer'
+          }}
+        >
+          Habitaciones
+        </button>
       </nav>
       <div style={{ padding: '20px' }}>
         {moduloActual === 'clientes' && <Clientes />}
         {moduloActual === 'hoteles' && <Hoteles />}
         {moduloActual === 'ingresos' && <Ingresos />}
         {moduloActual === 'danos' && <Danos />}
+        {moduloActual === 'habitaciones' && <Habitaciones />}
       </div>
     </div>
   )
