@@ -5,6 +5,7 @@ import HabitacionesForm from "./HabitacionesForm";
 function ListarHabitaciones() {
   const [habitaciones, setHabitaciones] = useState([]);
   const [mostrarForm, setMostrarForm] = useState(false);
+  const [habitacionEditar, setHabitacionEditar] = useState(null);
 
   useEffect(() => {
     cargarHabitaciones();
@@ -17,18 +18,37 @@ function ListarHabitaciones() {
 
   const handleGuardar = () => {
     setMostrarForm(false);
+    setHabitacionEditar(null);
     cargarHabitaciones();
+  };
+
+  const handleEditar = (habitacion) => {
+    setHabitacionEditar(habitacion); // cargar datos en el formulario
+    setMostrarForm(true);
+  };
+
+  const handleEliminar = async (idhotel, nrohabitacion) => {
+    if (window.confirm("¿Seguro que quieres eliminar esta habitación?")) {
+      await habitacionesService.eliminarHabitacion(idhotel, nrohabitacion);
+      cargarHabitaciones();
+    }
   };
 
   return (
     <div>
       <h1>Gestión de Habitaciones por Hotel</h1>
-      <button onClick={() => setMostrarForm(true)} style={{ padding: "10px", marginBottom: "20px" }}>
+      <button onClick={() => setMostrarForm(true)} className="btnEditar">
         Asignar nueva habitación
       </button>
 
-      {mostrarForm && <HabitacionesForm onSave={handleGuardar} onCancel={() => setMostrarForm(false)} />}
-
+      {mostrarForm && (
+        <HabitacionesForm
+          habitacionInicial={habitacionEditar}
+          onSave={handleGuardar}
+          onCancel={() => { setMostrarForm(false); setHabitacionEditar(null); }}
+        />
+      )}
+      
       <table border="1" cellPadding="8">
         <thead>
           <tr>
@@ -55,10 +75,8 @@ function ListarHabitaciones() {
               <td>{h.precio}</td>
               <td>{h.nro_piso}</td>
               <td>
-                <button className="btn-eliminar"
-                onClick={() => habitacionesService.eliminarHabitacion(h.idhotel, h.nrohabitacion).then(cargarHabitaciones)}>
-                  Eliminar
-                </button>
+                <button className="btnEditar" onClick={() => handleEditar(h)}>Editar</button>
+                <button className="btn-eliminar" onClick={() => handleEliminar(h.idhotel, h.nrohabitacion)}>Eliminar</button>
               </td>
             </tr>
           ))}

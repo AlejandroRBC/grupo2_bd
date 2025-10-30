@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { habitacionesService, hotelesService } from "../services/habitacionesService";
 
-function HabitacionesForm({ onSave, onCancel }) {
+function HabitacionesForm({ habitacionInicial, onSave, onCancel }) {
   const [form, setForm] = useState({
-    idhotel: "",
-    nrohabitacion: "",
-    tipohabitacion: "",
-    capacidad: "",
-    estado: "DISPONIBLE",
-    precio: "",
-    nro_piso: "",
+    idhotel: habitacionInicial?.idhotel || "",
+    nrohabitacion: habitacionInicial?.nrohabitacion || "",
+    tipohabitacion: habitacionInicial?.tipohabitacion || "",
+    capacidad: habitacionInicial?.capacidad || "",
+    estado: habitacionInicial?.estado || "DISPONIBLE",
+    precio: habitacionInicial?.precio || "",
+    nro_piso: habitacionInicial?.nro_piso || "",
   });
   const [hoteles, setHoteles] = useState([]);
   const [error, setError] = useState('');
@@ -80,46 +80,32 @@ INSERT INTO habitacion (
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Validaciones
-    if (!form.idhotel) {
-      setError('Debe seleccionar un hotel');
-      return;
-    }
+  e.preventDefault();
 
-    if (!form.nrohabitacion) {
-      setError('El número de habitación es requerido');
-      return;
-    }
+  // Validaciones (las tuyas actuales)
+  if (!form.idhotel || !form.nrohabitacion || !form.tipohabitacion) {
+    setError("Complete los campos obligatorios");
+    return;
+  }
 
-    if (!form.tipohabitacion) {
-      setError('El tipo de habitación es requerido');
-      return;
-    }
-
-    if (form.precio && parseFloat(form.precio) < 0) {
-      setError('El precio no puede ser negativo');
-      return;
-    }
-
-    if (form.capacidad && parseInt(form.capacidad) <= 0) {
-      setError('La capacidad debe ser mayor a 0');
-      return;
-    }
-
-    try {
+  try {
+    if (habitacionInicial) {
+      // Modo edición
+      await habitacionesService.actualizarHabitacion(
+        habitacionInicial.idhotel,
+        habitacionInicial.nrohabitacion,
+        form
+      );
+    } else {
+      // Modo creación
       await habitacionesService.crearHabitacion(form);
-      onSave();
-    } catch (error) {
-      console.error('Error al crear habitación:', error);
-      if (error.response && error.response.data && error.response.data.error) {
-        setError(error.response.data.error);
-      } else {
-        setError('Error al crear la habitación');
-      }
     }
-  };
+    onSave();
+  } catch (error) {
+    console.error("Error al guardar habitación:", error);
+    setError("Error al guardar la habitación");
+  }
+};
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -132,8 +118,11 @@ INSERT INTO habitacion (
           borderRadius: "8px",
           backgroundColor: "white"
         }}>
-          <h3 style={{ margin: '0 0 20px 0', color: '#17a2b8' }}>🏨 Asignar Habitación a Hotel</h3>
           
+          <h3 style={{ margin: '0 0 20px 0', color: '#17a2b8' }}>
+            {habitacionInicial ? "✏️ Editar Habitación" : "🏨 Asignar Habitación a Hotel"}
+          </h3>
+
           {error && (
             <div style={{ 
               color: 'red', 
