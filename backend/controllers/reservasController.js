@@ -10,7 +10,7 @@ export const reservasController = {
           r.fecha_fin,
           r.costo_total,
           r.estado,
-          r.idcliente,
+          r.ci_cliente,
           p.nombre || ' ' || p.apellido as cliente_nombre,
           dr.idhotel,
           dr.nrohabitacion,
@@ -18,8 +18,8 @@ export const reservasController = {
           hab.tipohabitacion,
           hab.estado as habitacion_estado
         FROM reserva r
-        JOIN cliente c ON r.idcliente = c.idcliente
-        JOIN persona p ON c.idcliente = p.id
+        JOIN cliente c ON r.ci_cliente = c.ci_cliente
+        JOIN persona p ON c.ci_cliente = p.id
         JOIN detalle_reserva dr ON r.idreserva = dr.idreserva
         JOIN hotel h ON dr.idhotel = h.idhotel
         JOIN habitacion hab ON dr.idhotel = hab.idhotel AND dr.nrohabitacion = hab.nrohabitacion
@@ -41,7 +41,7 @@ export const reservasController = {
           r.fecha_fin,
           r.costo_total,
           r.estado,
-          r.idcliente,
+          r.ci_cliente,
           p.nombre || ' ' || p.apellido as cliente_nombre,
           dr.idhotel,
           dr.nrohabitacion,
@@ -49,8 +49,8 @@ export const reservasController = {
           hab.tipohabitacion,
           hab.estado as habitacion_estado
         FROM reserva r
-        JOIN cliente c ON r.idcliente = c.idcliente
-        JOIN persona p ON c.idcliente = p.id
+        JOIN cliente c ON r.ci_cliente = c.ci_cliente
+        JOIN persona p ON c.ci_cliente = p.id
         JOIN detalle_reserva dr ON r.idreserva = dr.idreserva
         JOIN hotel h ON dr.idhotel = h.idhotel
         JOIN habitacion hab ON dr.idhotel = hab.idhotel AND dr.nrohabitacion = hab.nrohabitacion
@@ -74,7 +74,7 @@ export const reservasController = {
           r.fecha_fin,
           r.costo_total,
           r.estado,
-          r.idcliente,
+          r.ci_cliente,
           p.nombre || ' ' || p.apellido as cliente_nombre,
           dr.idhotel,
           dr.nrohabitacion,
@@ -82,8 +82,8 @@ export const reservasController = {
           hab.tipohabitacion,
           hab.estado as habitacion_estado
         FROM reserva r
-        JOIN cliente c ON r.idcliente = c.idcliente
-        JOIN persona p ON c.idcliente = p.id
+        JOIN cliente c ON r.ci_cliente = c.ci_cliente
+        JOIN persona p ON c.ci_cliente = p.id
         LEFT JOIN detalle_reserva dr ON r.idreserva = dr.idreserva
         LEFT JOIN hotel h ON dr.idhotel = h.idhotel
         LEFT JOIN habitacion hab ON dr.idhotel = hab.idhotel AND dr.nrohabitacion = hab.nrohabitacion
@@ -102,14 +102,14 @@ export const reservasController = {
   },
 
   async crearReserva(req, res) {
-    const { fecha_inicio, fecha_fin, costo_total, estado, idcliente, idhotel, nrohabitacion } = req.body;
+    const { fecha_inicio, fecha_fin, costo_total, estado, ci_cliente, idhotel, nrohabitacion } = req.body;
     try {
       await pool.query('BEGIN');
 
       const insertReserva = await pool.query(
-        `INSERT INTO reserva (fecha_inicio, fecha_fin, costo_total, estado, idcliente)
+        `INSERT INTO reserva (fecha_inicio, fecha_fin, costo_total, estado, ci_cliente)
          VALUES ($1,$2,$3,$4,$5) RETURNING idreserva`,
-        [fecha_inicio || null, fecha_fin || null, costo_total || null, estado || null, idcliente || null]
+        [fecha_inicio || null, fecha_fin || null, costo_total || null, estado || null, ci_cliente || null]
       );
 
       const idreserva = insertReserva.rows[0].idreserva;
@@ -133,14 +133,14 @@ export const reservasController = {
 
   async actualizarReserva(req, res) {
     const { id } = req.params;
-    const { fecha_inicio, fecha_fin, costo_total, estado, idcliente, idhotel, nrohabitacion } = req.body;
+    const { fecha_inicio, fecha_fin, costo_total, estado, ci_cliente, idhotel, nrohabitacion } = req.body;
     try {
       await pool.query('BEGIN');
 
       await pool.query(
-        `UPDATE reserva SET fecha_inicio=$1, fecha_fin=$2, costo_total=$3, estado=$4, idcliente=$5
+        `UPDATE reserva SET fecha_inicio=$1, fecha_fin=$2, costo_total=$3, estado=$4, ci_cliente=$5
          WHERE idreserva=$6`,
-        [fecha_inicio || null, fecha_fin || null, costo_total || null, estado || null, idcliente || null, id]
+        [fecha_inicio || null, fecha_fin || null, costo_total || null, estado || null, ci_cliente || null, id]
       );
 
       // Actualizar detalle_reserva: eliminar existente y crear nueva asociación si se envía habitación

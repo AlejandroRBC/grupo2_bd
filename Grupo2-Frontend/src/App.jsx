@@ -7,6 +7,7 @@ import Danos from './modules/Danos/Danos';
 import Habitaciones from "./modules/Habitaciones/Habitaciones";
 import Empleados from "./modules/Empleados/Empleados";
 import Reservas from "./modules/Reservas/Reservas";
+import Deportivos from "./modules/Deportivos/Deportivos";
 
 function App() {
   const [moduloActual, setModuloActual] = useState('clientes');
@@ -18,7 +19,8 @@ function App() {
     { key: 'habitaciones', label: 'Habitaciones', icon: '' },
     { key: 'ingresos', label: 'Ingresos', icon: '' },
     { key: 'danos', label: 'Daños', icon: '' },
-    { key: 'reservas', label: 'Reservas', icon: '' }
+    { key: 'reservas', label: 'Reservas', icon: '' },
+     { key: 'deportivos', label: 'Sistema Deportivo', icon: '' } 
   ];
 
   return (
@@ -137,6 +139,8 @@ function App() {
           {moduloActual === 'ingresos' && <Ingresos />}
           {moduloActual === 'danos' && <Danos />}
           {moduloActual === 'reservas' && <Reservas />}
+          
+          {moduloActual === 'deportivos' && <Deportivos />}
         </div>
       </div>
 
